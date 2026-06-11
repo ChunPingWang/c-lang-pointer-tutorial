@@ -27,6 +27,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 add_library(gps_core STATIC
     src/gps/ring_buffer.c
     src/gps/nmea_parser.c
+    src/gps/track_log.c
     src/hal/uart_mock.c
 )
 target_link_libraries(gps_core PUBLIC m)

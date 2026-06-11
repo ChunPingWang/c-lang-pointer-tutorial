@@ -26,6 +26,8 @@
 | 雙重指標 `**`   | `split_fields(char *line, char **out_fields)` |
 | `const`         | 唯讀字串、唯讀結構參數                        |
 | `volatile`      | UART ISR 改動的 ring buffer 索引              |
+| `malloc`/`free` | host 端 `read_whole_file` 讀整檔到 heap       |
+| Linked list     | `track_log_t` 儲存任意筆數的 GPS 軌跡         |
 
 ---
 
@@ -41,6 +43,8 @@
 | 05  | [雙重指標 `**`](docs/05-double-pointer.md)          | 拆 NMEA 欄位陣列：`char *fields[]`              |
 | 06  | [`const` 與 `volatile`](docs/06-const-volatile.md)  | 為什麼 MCU 暫存器一定要 `volatile`              |
 | 07  | [常見地雷](docs/07-pitfalls.md)                     | 野指標、懸空指標、`sizeof` 陷阱、字串字面值     |
+| 08  | [動態記憶體](docs/08-dynamic-memory.md)             | `malloc`/`realloc`/`free`、擁有權、動態成長陣列 |
+| 09  | [連結串列](docs/09-linked-list.md)                  | GPS track log 案例、`**` 在移除節點時的威力     |
 
 ---
 

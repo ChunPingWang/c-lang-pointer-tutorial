@@ -13,3 +13,5 @@
 | [05 — 雙重指標](../05-double-pointer.md)         | [solutions-05.md](solutions-05.md)            |
 | [06 — const 與 volatile](../06-const-volatile.md)| [solutions-06.md](solutions-06.md)            |
 | [07 — 常見地雷](../07-pitfalls.md)               | [solutions-07.md](solutions-07.md)            |
+| [08 — 動態記憶體](../08-dynamic-memory.md)       | [solutions-08.md](solutions-08.md)            |
+| [09 — 連結串列](../09-linked-list.md)            | [solutions-09.md](solutions-09.md)            |
