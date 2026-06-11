@@ -1,0 +1,12 @@
+function(add_example dir)
+    set(target "ex_${dir}")
+    add_executable(${target} ${dir}/main.c)
+    target_link_libraries(${target} PRIVATE gps_core)
+endfunction()
+
+add_example(01_basics)
+add_example(02_array_string)
+add_example(03_struct_pointer)
+add_example(04_function_pointer)
+add_example(05_double_pointer)
+add_example(06_const_volatile)

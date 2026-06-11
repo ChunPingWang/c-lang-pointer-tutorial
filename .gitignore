@@ -1,0 +1,11 @@
+build/
+build-*/
+*.o
+*.obj
+*.a
+*.exe
+.vscode/
+.idea/
+*.swp
+.DS_Store
+.claude/

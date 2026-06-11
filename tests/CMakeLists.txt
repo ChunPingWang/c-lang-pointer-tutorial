@@ -1,0 +1,9 @@
+function(add_unit_test name)
+    add_executable(${name} ${name}.c)
+    target_link_libraries(${name} PRIVATE gps_core)
+    add_test(NAME ${name} COMMAND ${name})
+endfunction()
+
+add_unit_test(test_ring_buffer)
+add_unit_test(test_nmea_parser)
+add_unit_test(test_pointer_basics)
