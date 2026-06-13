@@ -74,11 +74,19 @@ c-lang-pointer-tutorial/
 
 ### 必要工具
 
-| 工具      | macOS                                 | Linux              | Windows                |
-| --------- | ------------------------------------- | ------------------ | ---------------------- |
-| C 編譯器  | `xcode-select --install`              | `apt install gcc`  | MSYS2 + MinGW          |
-| CMake     | `brew install cmake`                  | `apt install cmake`| 官方安裝包             |
-| Make/Ninja| 內建                                  | 內建               | 透過 MSYS2 / Ninja     |
+| 工具       | macOS                                 | Linux               | Windows                                |
+| ---------- | ------------------------------------- | ------------------- | -------------------------------------- |
+| C 編譯器   | `xcode-select --install`              | `apt install gcc`   | MSVC (Visual Studio) / MSYS2+MinGW / clang-cl |
+| CMake      | `brew install cmake`                  | `apt install cmake` | 官方安裝包                             |
+| Make/Ninja | 內建                                  | 內建                | 透過 MSYS2 / Ninja                     |
+
+### 平台差異備註
+
+- **Linux / macOS**：完全相同，照下面指令即可。
+- **Windows**：
+  - 用 Visual Studio：`cmake -S . -B build -G "Visual Studio 17 2022"`，再 `cmake --build build --config Debug`。
+  - 用 MinGW-w64：`cmake -S . -B build -G "MinGW Makefiles"`。
+  - 控制台想正確顯示繁體中文輸出：先執行 `chcp 65001`，或改用 Windows Terminal / PowerShell 7。
 
 ### 建置與測試
 

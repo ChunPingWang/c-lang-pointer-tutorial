@@ -13,14 +13,18 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 endif()
 
-add_compile_options(
-    -Wall
-    -Wextra
-    -Wpedantic
-    -Wshadow
-    -Wconversion
-    -Wno-sign-conversion
-)
+if(MSVC)
+    add_compile_options(/W4 /permissive-)
+else()
+    add_compile_options(
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Wshadow
+        -Wconversion
+        -Wno-sign-conversion
+    )
+endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
@@ -30,7 +34,9 @@ add_library(gps_core STATIC
     src/gps/track_log.c
     src/hal/uart_mock.c
 )
-target_link_libraries(gps_core PUBLIC m)
+if(NOT WIN32)
+    target_link_libraries(gps_core PUBLIC m)
+endif()
 
 add_executable(gps_demo src/app/main.c)
 target_link_libraries(gps_demo PRIVATE gps_core)

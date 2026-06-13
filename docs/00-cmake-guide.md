@@ -77,21 +77,22 @@ endif()
 如果使用者沒指定 `-DCMAKE_BUILD_TYPE=Release`，預設用 Debug。
 教學階段 Debug 比 Release 好，因為符號資訊完整、能配合 gdb 看指標。
 
-### (5) Warning flags
+### (5) Warning flags（跨平台版本）
 
 ```cmake
-add_compile_options(
-    -Wall
-    -Wextra
-    -Wpedantic
-    -Wshadow
-    -Wconversion
-    -Wno-sign-conversion
-)
+if(MSVC)
+    add_compile_options(/W4 /permissive-)
+else()
+    add_compile_options(
+        -Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wno-sign-conversion
+    )
+endif()
 ```
 
 寫指標時編譯器警告非常珍貴：未初始化、型別不對、隱式轉換⋯⋯都會幫你抓出來。
-`-Wno-sign-conversion` 是因為 `size_t` 與 `int` 互轉太常見，全開太吵。
+
+**為什麼要 `if(MSVC)`？** GCC/clang 用 `-W...` 語法，MSVC 用 `/W4`。把警告旗標放在條件分支裡，CMake 才能在三個平台都正確配置。
+`-Wno-sign-conversion` 是因為 `size_t` 與 `int` 互轉太常見，全開太吵；MSVC 用 `/permissive-` 強制標準 C 行為。
 
 ### (6) include path
 
@@ -108,15 +109,20 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 add_library(gps_core STATIC
     src/gps/ring_buffer.c
     src/gps/nmea_parser.c
+    src/gps/track_log.c
     src/hal/uart_mock.c
 )
-target_link_libraries(gps_core PUBLIC m)
+if(NOT WIN32)
+    target_link_libraries(gps_core PUBLIC m)
+endif()
 ```
 
-`gps_core` 是一個 **靜態函式庫** (`.a`)，把所有解析邏輯打包起來。
+`gps_core` 是一個 **靜態函式庫** (`.a` / `.lib`)，把所有解析邏輯打包起來。
 這樣 `gps_demo`、每個 `ex_XX`、每個測試都可以連結同一份程式碼，**不會重複編譯**。
 
 `PUBLIC m` 表示「我依賴 libm（數學函式庫，提供 `modf`），而且任何連結我的 target 也會自動連到 libm」。
+
+**為什麼 Windows 不需要 `m`？** MSVC 與 MinGW 的 CRT 已經把數學函式併進 `libc`/`msvcrt`，沒有獨立的 `libm.lib`。寫 `target_link_libraries(... m)` 在 Windows 上會找不到 `m.lib` 而 link 失敗，所以要包在 `if(NOT WIN32)` 裡。
 
 > 對指標學習者來說：靜態函式庫的概念跟「把 `ring_buffer_init` 放進共用工具箱」差不多。記得，連結器最後會把所有 `.o` 串成一支可執行檔。
 
